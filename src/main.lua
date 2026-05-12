@@ -1,5 +1,7 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local Aimbot = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/refs/heads/main/src/functions/aimbot.lua"))()
+local Movement = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/refs/heads/main/src/functions/movement.lua"))()
+local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/refs/heads/main/src/functions/esp.lua"))()
 
 local Window = Fluent:CreateWindow({
     Title = "[RIVAL] pixel-hub",
@@ -44,6 +46,7 @@ end
 local Tabs = {
     Combat = Window:AddTab({ Title = "Combat", Icon = "crosshair" }),
     Movement = Window:AddTab({ Title = "Movement", Icon = "zap" }),
+    Visuals = Window:AddTab({ Title = "Visuals", Icon = "eye" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
@@ -95,9 +98,7 @@ Tabs.Movement:AddSlider("WalkSpeed", {
     Max = 150,
     Rounding = 0,
     Callback = function(Value)
-        pcall(function()
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-        end)
+        Movement.WalkSpeed = Value
     end
 })
 
@@ -108,15 +109,58 @@ Tabs.Movement:AddSlider("JumpPower", {
     Max = 300,
     Rounding = 0,
     Callback = function(Value)
-        pcall(function()
-            game.Players.LocalPlayer.Character.Humanoid.UseJumpPower = true
-            game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-        end)
+        Movement.JumpPower = Value
     end
 })
 
-Tabs.Movement:AddToggle("FlyHack", { Title = "Enable Flight", Default = false })
-Tabs.Movement:AddToggle("NoClip", { Title = "Enable No-Clip", Default = false })
+Tabs.Movement:AddToggle("FlyHack", { 
+    Title = "Enable Flight", 
+    Default = false,
+    Callback = function(Value)
+        Movement.FlyEnabled = Value
+    end
+})
+
+Tabs.Movement:AddToggle("NoClip", { 
+    Title = "Enable No-Clip", 
+    Default = false,
+    Callback = function(Value)
+        Movement.NoClipEnabled = Value
+    end
+})
+
+Tabs.Visuals:AddToggle("ESPEnable", {
+    Title = "Enable ESP",
+    Default = false,
+    Callback = function(Value)
+        ESP.Enabled = Value
+    end
+})
+
+Tabs.Visuals:AddToggle("ESPBoxes", {
+    Title = "Show Boxes (Highlight)",
+    Default = true,
+    Callback = function(Value)
+        ESP.Boxes = Value
+    end
+})
+
+Tabs.Visuals:AddToggle("ESPNames", {
+    Title = "Show Names",
+    Default = true,
+    Callback = function(Value)
+        ESP.Names = Value
+    end
+})
+
+Tabs.Visuals:AddInput("ESPColorInput", {
+    Title = "ESP Color (HEX)",
+    Default = "ffffff",
+    Callback = function(Value)
+        local success, color = pcall(function() return Color3.fromHex(Value) end)
+        if success then ESP.Color = color end
+    end
+})
 
 Window:SelectTab(1)
 Authenticate()
