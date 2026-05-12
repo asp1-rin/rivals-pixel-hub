@@ -1,7 +1,6 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local Bypass = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/main/src/bypass.lua"))()
 Bypass:Initialize()
-
 local Aimbot = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/main/src/functions/aimbot.lua"))()
 local Movement = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/main/src/functions/movement.lua"))()
 local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/main/src/functions/esp.lua"))()
