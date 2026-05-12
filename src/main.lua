@@ -1,4 +1,5 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local Aimbot = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/refs/heads/main/src/functions/aimbot.lua"))()
 
 local Window = Fluent:CreateWindow({
     Title = "[RIVAL] pixel-hub",
@@ -46,8 +47,22 @@ local Tabs = {
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
-Tabs.Combat:AddToggle("AimbotEnable", { Title = "Enable Aimbot", Default = false })
-Tabs.Combat:AddToggle("ShowFOV", { Title = "Show FOV Circle", Default = false })
+Tabs.Combat:AddToggle("AimbotEnable", { 
+    Title = "Enable Aimbot", 
+    Default = false,
+    Callback = function(Value)
+        Aimbot.Enabled = Value
+    end
+})
+
+Tabs.Combat:AddToggle("ShowFOV", { 
+    Title = "Show FOV Circle", 
+    Default = false,
+    Callback = function(Value)
+        Aimbot.ShowFOV = Value
+    end
+})
+
 Tabs.Combat:AddSlider("FOVRadius", {
     Title = "FOV Radius",
     Default = 100,
@@ -55,7 +70,21 @@ Tabs.Combat:AddSlider("FOVRadius", {
     Max = 800,
     Rounding = 1,
     Callback = function(Value)
-        _G.AimbotFOV = Value
+        Aimbot.FOVRadius = Value
+    end
+})
+
+Tabs.Combat:AddInput("FOVColorInput", {
+    Title = "FOV Circle Color (HEX)",
+    Default = "ffffff",
+    Placeholder = "ffffff",
+    Callback = function(Value)
+        local success, color = pcall(function()
+            return Color3.fromHex(Value)
+        end)
+        if success then
+            Aimbot.FOVColor = color
+        end
     end
 })
 
@@ -80,6 +109,7 @@ Tabs.Movement:AddSlider("JumpPower", {
     Rounding = 0,
     Callback = function(Value)
         pcall(function()
+            game.Players.LocalPlayer.Character.Humanoid.UseJumpPower = true
             game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
         end)
     end
