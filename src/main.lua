@@ -1,16 +1,46 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local Aimbot = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/refs/heads/main/src/functions/aimbot.lua"))()
-local Movement = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/refs/heads/main/src/functions/movement.lua"))()
-local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/refs/heads/main/src/functions/esp.lua"))()
+local Bypass = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/main/src/bypass.lua"))()
+Bypass:Initialize()
+
+local Aimbot = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/main/src/functions/aimbot.lua"))()
+local Movement = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/main/src/functions/movement.lua"))()
+local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/asp1-rin/rivals-pixel-hub/main/src/functions/esp.lua"))()
 
 local Window = Fluent:CreateWindow({
     Title = "[RIVAL] pixel-hub",
-    SubTitle = "Private Version",
+    SubTitle = "Mobile & iPad Support",
     TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
-    Acrylic = true,
-    Theme = "Dark"
+    Size = UDim2.fromOffset(480, 360),
+    Acrylic = false,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
 })
+
+local function CreateMobileToggle()
+    local ScreenGui = Instance.new("ScreenGui")
+    local ToggleButton = Instance.new("TextButton")
+
+    ScreenGui.Name = "PixelHubToggle"
+    ScreenGui.Parent = game:GetService("CoreGui")
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    ToggleButton.Name = "ToggleButton"
+    ToggleButton.Parent = ScreenGui
+    ToggleButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    ToggleButton.BorderSizePixel = 2
+    ToggleButton.BorderColor3 = Color3.fromRGB(0, 120, 255)
+    ToggleButton.Position = UDim2.new(0, 10, 0.5, 0)
+    ToggleButton.Size = UDim2.new(0, 50, 0, 50)
+    ToggleButton.Font = Enum.Font.GothamBold
+    ToggleButton.Text = "PIXEL"
+    ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.TextSize = 12
+    ToggleButton.Draggable = true
+
+    ToggleButton.MouseButton1Click:Connect(function()
+        Window:Minimize()
+    end)
+end
 
 local function Authenticate()
     local AuthWindow = Fluent:CreateWindow({
@@ -36,6 +66,7 @@ local function Authenticate()
             if _G.LoginToken == "asp1rin" then
                 Fluent:Notify({ Title = "pixel-hub", Content = "Authentication Success!", Duration = 3 })
                 AuthWindow:Destroy()
+                CreateMobileToggle()
             else
                 Fluent:Notify({ Title = "pixel-hub", Content = "Invalid Token!", Duration = 5 })
             end
